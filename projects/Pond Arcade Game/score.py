@@ -30,3 +30,5 @@ class Score(Turtle):
     def game_over(self,winner):
             self.goto(0,0)
             self.write(f"GAME OVER\n{winner} Wins!", align="center", font=("Courier", 50, "normal"))
+ 
+

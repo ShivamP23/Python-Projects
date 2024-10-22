@@ -19,7 +19,7 @@ screen.onkey(r_paddle.go_down, "Down")
 
 screen.onkey(l_paddle.go_up, "w")
 screen.onkey(l_paddle.go_down, "s")
-
+ 
 game_is_on = True
 winning_score = 10
 while game_is_on:
