@@ -23,3 +23,4 @@ class Player(Turtle):
             return True
         else:
             return False
+   
