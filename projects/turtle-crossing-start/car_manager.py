@@ -10,7 +10,7 @@ class CarManager:
     def __init__(self):
         self.all_car = []
         self.car_speed = STARTING_MOVE_DISTANCE
-
+ 
     def create_car(self):
         random_cahnce = random.randint(1,6)
         if random_cahnce == 1:
