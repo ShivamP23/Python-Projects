@@ -1,6 +1,7 @@
 from tkinter import * 
 from tkinter import messagebox
 from random import choice, randint, shuffle
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -22,19 +23,54 @@ def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {
+         website: {
+              "email": email,
+              "password": password,
+              }
+        }
 
     if len(website) == 0 or len(password) == 0 or len(email) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
     else:
+        try:
+            with open("projects\password-manager-generator\data.json", "r") as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open ("projects\password-manager-generator\data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent = 3)
+        else:
+            data.update(new_data)
 
-        is_ok = messagebox.askokcancel(title=website, message=f" These are the details entered: \nEmail: {email}\nPassword: {password} \nIs it ok to save?")
+            with open("projects\password-manager-generator\data.json", "r") as data_file:
+                json.dump(new_data, data_file, indent=3)
+        finally:
+            website_entry.delete(0, END)
+            email_entry.delete(0,END)
+            password_entry.delete(0,END)
+    """
+    #reading old data
+    data = json.load(data_file) // Use r here for reading 
+    #updating old data with new data
+    data.update(new_data)
+    #saving updated data
+    json.dump(data,data_file, indent=4)
+    """
 
-        if is_ok:
-            with open("projects\password-manager-generator\data.txt", "a") as data_file:
-                data_file.write(f"{website} | {email} | {password}\n")
-                website_entry.delete(0, END)
-                email_entry.delete(0,END)
-                password_entry.delete(0,END)
+def find_password():
+    website = website_entry.get()
+    try:
+        with open("projects/password-manager-generator/data.json") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found.")
+    else:
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+        else: 
+            messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -59,14 +95,16 @@ password_label.grid(row=3, column=0)
     but it does not have to stretch vertically.
 """
 
-website_entry = Entry(width=35)
-website_entry.grid(row=1, column=1, columnspan=2, sticky="EW")
+website_entry = Entry(width=32)
+website_entry.grid(row=1, column=1, sticky="W")
 website_entry.focus()
 email_entry = Entry(width=35)
 email_entry.grid(row=2, column=1, columnspan=2, sticky="EW")
 password_entry = Entry(width=32)
 password_entry.grid(row=3, column=1, sticky="W")
 
+search_button = Button(text="Search", width= 12, command= find_password)
+search_button.grid(row = 1, column = 2, sticky="EW")
 generate_password_button = Button(text="Generate Password", command= generate_password)
 generate_password_button.grid(row = 3, column =2, sticky="EW")
 add_button = Button(text="Add", width = 36, command=save)
