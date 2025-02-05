@@ -1,7 +1,7 @@
 import requests
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.5/forecast"
-api_key = "fe5e2a81a5857cc18bbc040125649e3a"
+api_key = "your token"
 
 weather_params = {
     "lat": 40.518715,
@@ -24,3 +24,7 @@ for hour_data in weather_data["list"]:
 if will_rain:
     print("Bring an umbrella.")
        
+
+
+
+#fe5e2a81a5857cc18bbc040125649e3a
