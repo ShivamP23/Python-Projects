@@ -24,7 +24,7 @@ for hour_data in weather_data["list"]:
 if will_rain:
     print("Bring an umbrella.")
        
-
+# use a twillio to get the text message 
 
 
 #fe5e2a81a5857cc18bbc040125649e3a
